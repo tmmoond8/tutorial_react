@@ -1,47 +1,47 @@
 import React from 'react';
 import Header from './Header';
 import Content from './Content';
+import RandomNumber from './RandomNumber';
 
 class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: Math.round(Math.random() * 100)
+        };
+        
+        this.updateValue = this.updateValue.bind(this);
+    }
+
+    updateValue(randomValue) {
+        this.setState({
+            value: randomValue
+        });
+    }
+
     heyYeYe_S2() {
         alert("hey ");
     }
 
-    /*render(){
-        let text = "I want talk to you";
-
-        let pStyle = {
-            color: 'aqua',
-            backgroundColor: 'black'
-        };
-        return (
-            <div>
-                <h1> {text}</h1>
-                <h2> you so beautiful</h2>
-                <button onClick={this.heyYeYe_S2}>Click Me</button>
-                <p style = {pStyle}>{ 1 == 1 ? text : 'False'}</p>
-            </div>
-                
-        );
-    }*/
     render() {
-        let data = this.props.data;
-
         return (
             <div>
-                <Header title={data.title}/>
-                <Content name={data.name} age={data.age}/>
+                <Header title={ this.props.headerTitle }/>
+                <Content title={ this.props.contentTitle }
+                    body ={this.props.contentBody }/>
+                    <RandomNumber number={this.state.value}
+                        onUpdate={this.updateValue} />
             </div>
         );
     }
 }
 
 App.defaultProps = {
-    data: {
-        title: 'title',
-        name: 'name',
-        age: 30
-    }
+    headerTitle: 'Default header',
+    contentTitle: 'Default contentTitle',
+    contentBody: 'Default contentBody'
 }
 
 export default App;

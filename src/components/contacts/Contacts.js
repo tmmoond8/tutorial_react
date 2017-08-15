@@ -3,6 +3,7 @@ import update from 'react-addons-update';
 import ContactCreator from './ContactCreator';
 import ContactItem from './ContactItem';
 import ContactRemover from './ContactRemover';
+import ContactEditor from './ContactEditor';
 
 class Contacts extends React.Component {
     constructor(props) {
@@ -12,7 +13,11 @@ class Contacts extends React.Component {
                 {name: "Betty", phone: "010-0000-0002"},
                 {name: "Charlie", phone: "010-0000-0003"},
                 {name: "David", phone: "010-0000-0004"}],
-                selectedKey : -1
+                selectedKey : -1,
+                selectedContact : {
+                    name : '',
+                    phone : ''
+                }
         };
     }
 
@@ -25,24 +30,49 @@ class Contacts extends React.Component {
         this.setState(newState);
     }
 
+    onEdit(name, phone) {
+
+        this.setState({
+            contactsData: update(
+                this.state.contactsData,
+                {
+                    [this.state.selectedKey] : {
+                        name: { $set : name},
+                        phone: { $set: phone}
+                    }
+                }
+            ),
+            selectedContact : {
+                name : '',
+                phone : ''
+            }
+        });
+
+    }
+
     onSelect(key) {
-        if (this.isSelectedKey(key)) {
+        if (this.isSelected(key)) {
             console.log('key ==0?');
             this.setState({
-                selectedKey: -1
+                selectedKey: -1,
+                selectedContact: {
+                    name : '',
+                    phone : ''
+                }
             });
             return;
         }
 
         this.setState({
-            selectedKey: key
+            selectedKey: key,
+            selectedContact : this.state.contactsData[key]
         });
-        console.log('selected key is ' + key);
+        console.log('onSelect : selected key is ' + key);
     }
 
     onRemove() {
         if (this.state.selectedKey === -1) {
-            console.log('selected contact is null');
+            console.log('on Remove : selected contact is null');
             return;
         }
         let newContactsData = update(this.state.contactsData, {  
@@ -54,7 +84,15 @@ class Contacts extends React.Component {
         });
     }
 
-    isSelectedKey(key) {
+    isSelectedKeyEmpty() {
+        if (this.state.selectedKey === -1) {
+            return true;
+        } else {
+            false;
+        }
+    }
+
+    isSelected(key) {
         if (key === this.state.selectedKey) {
             return true;
         } else {
@@ -69,7 +107,7 @@ class Contacts extends React.Component {
                 <ul>
                 {this.state.contactsData.map((contact, i) => {
                     return(<ContactItem onSelect={this.onSelect.bind(this)}
-                                        isSelectedKey={this.isSelectedKey.bind(this)(i)}
+                                        isSelected={this.isSelected.bind(this)(i)}
                                         name={contact.name}
                                         phone={contact.phone} 
                                         contactKey={i}
@@ -78,6 +116,10 @@ class Contacts extends React.Component {
                 })}
                 </ul>
                 <ContactRemover onRemove={this.onRemove.bind(this)}/>
+                <ContactEditor onEdit={this.onEdit.bind(this)}
+                                isSelectedKeyEmpty={this.isSelectedKeyEmpty.bind(this)()}
+                    contact={this.state.selectedContact}
+                />
                 <ContactCreator onInsert={this.onInsert.bind(this)}/>
             </div>
         );

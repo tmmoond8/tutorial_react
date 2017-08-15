@@ -9,7 +9,6 @@ class ContactItem extends React.Component {
     render() {
         let style = {};
         let getStyle = function(isSelect) {
-            console.log(isSelect);
             if (isSelect) {
                 style.background = '#00ff00';
             } else {
@@ -18,7 +17,7 @@ class ContactItem extends React.Component {
             return style;
         };
         return (
-            <li style={getStyle(this.props.isSelectedKey)}
+            <li style={getStyle(this.props.isSelected)}
                 onClick={this.handleClick.bind(this)}>
                 {this.props.name} {this.props.phone}
             </li>

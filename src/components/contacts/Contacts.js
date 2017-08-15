@@ -52,7 +52,6 @@ class Contacts extends React.Component {
 
     onSelect(key) {
         if (this.isSelected(key)) {
-            console.log('key ==0?');
             this.setState({
                 selectedKey: -1,
                 selectedContact: {

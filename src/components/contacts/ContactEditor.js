@@ -5,8 +5,8 @@ class ContactEditor extends React.Component {
         super(props);
 
         this.state = {
-            name: props.contact.name,
-            phone: props.contact.phone
+            name: '',
+            phone: ''
         };
     }
     componentWillReceiveProps(nextProps){

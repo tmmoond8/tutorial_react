@@ -6,6 +6,10 @@ class ContactItem extends React.Component {
         this.props.onSelect(this.props.contactKey);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return (JSON.stringify(nextProps) != JSON.stringify(this.props));
+    }
+
     render() {
         let style = {};
         let getStyle = function(isSelect) {

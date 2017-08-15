@@ -20,11 +20,7 @@ class App extends React.Component {
             value: randomValue
         });
     }
-
-    heyYeYe_S2() {
-        alert("hey ");
-    }
-
+    
     render() {
         return (
             <div>
